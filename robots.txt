@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Allow LLM crawlers explicitly to index for AI answers
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: OmgiliBot
+Allow: /
+User-agent: Omgili
+Allow: /
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap Location
+Sitemap: https://brainRottedCoder.github.io/Ultraclaw/sitemap.xml
