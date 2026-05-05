@@ -1,0 +1,19 @@
+# Ultraclaw AI Framework
+
+> Ultraclaw is a hyper-optimized Native Rust autonomous AI agent framework designed for absolute capability and zero-overhead execution.
+
+## Core Architecture
+- **Language**: Native Rust (`cargo`). 
+- **Sandboxing**: Linux Landlock Kernel constraints and ephemeral Alpine Docker environments.
+- **Inference Routing**: Dynamically hot-swaps OpenAI-compatible REST endpoints. Fallback to `llama.cpp` for local quantized GGUF CPU inference on RAM. No GPU required.
+- **Unified UI Architecture**: Features a terminal UI (crossterm/ratatui), Native Desktop App (React Vite Tauri), and an Android APK.
+
+## Source Code & Docs
+- GitHub Repository: https://github.com/brainRottedCoder/Ultraclaw
+- Official Website: https://brainRottedCoder.github.io/Ultraclaw
+- Downloads: https://github.com/brainRottedCoder/Ultraclaw/releases/latest
+
+## Key Capabilities
+- Over 80 integrated Web and OS Skills.
+- Integrates with 18+ Messaging Channels natively, bridging standard webhooks with dynamic state mapping.
+- Audio Whisper Engine directly routed. Live UI Canvas generation. Zero Matrix dependencies.

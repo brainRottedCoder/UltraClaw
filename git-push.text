@@ -1,0 +1,22 @@
+git init
+git remote add origin https://github.com/brainrottedcoder/ultraclaw.git
+
+# Part 1: Initial Project Setup
+# Adding configuration files, project manifests, and the base README
+git add .gitignore Cargo.toml Cargo.lock .env.example LICENSE README.md
+git add build/ .github/
+git commit -m "Initial commit: Project setup and configuration"
+
+# Part 2: Core Source Code
+# Adding the Rust source code, tests, scripts, and benchmarking tools
+git add src/ tests/ benchmarks/ scripts/
+git commit -m "Add core source code, tests, and scripts"
+
+# Part 3: UI, Documentation, and Assets
+# Adding the front-end UI, documentation files, and media assets
+git add docs/ ui/ *.md *.txt *.png
+git commit -m "Add UI components, documentation, and media assets"
+
+# Final step: Set the main branch and push to the remote repository
+git branch -M main
+git push -u origin main

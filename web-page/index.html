@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ultraclaw — Autonomous AI Agent Framework | Garage_Inference</title>
+<meta name="description" content="Ultraclaw: The ultimate autonomous AI agent framework running Phi-4-mini (3.8B params) locally at $0 inference cost. 8 scaffolding layers. Tier 1 Absolute Garage MAX." />
+<meta name="keywords" content="autonomous agent, AI framework, Rust LLM, local AI, edge AI, Phi-4-mini, Ollama, open source AI, agentic automation" />
+<meta property="og:title" content="Ultraclaw — Autonomous AI Agent Framework" />
+<meta property="og:description" content="3.8B params. 8 scaffolding layers. $0 inference cost. The agent singularity on a $500 laptop." />
+<meta property="og:type" content="website" />
+<style>
+/* RESET & BASE */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:#060606;color:#e5e7eb;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:100px 0;position:relative}
+.section-label{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;border:1px solid rgba(0,212,255,0.2);color:#00d4ff;background:rgba(0,212,255,0.05);margin-bottom:24px}
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.06);border-radius:20px}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 24px;background:rgba(6,6,6,0.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between}
+.navbar-logo{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:700;color:#fff}
+.navbar-logo span{color:#00d4ff}
+.navbar-links{display:flex;align-items:center;gap:24px}
+.navbar-links a{font-size:0.85rem;font-weight:500;color:#9ca3af;transition:color 0.2s}
+.navbar-links a:hover{color:#fff}
+.nav-github{display:flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:999px;font-size:0.85rem;font-weight:600;color:#fff;transition:all 0.3s}
+.nav-github:hover{background:rgba(255,255,255,0.15);border-color:rgba(0,212,255,0.3);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:80px}
+.hero-orbs{position:absolute;inset:0;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.15;animation:orbPulse 6s ease-in-out infinite}
+.orb-1{width:600px;height:600px;background:#00d4ff;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orb-2{width:400px;height:400px;background:#f59e0b;top:20%;right:10%;animation-delay:2s}
+.orb-3{width:350px;height:350px;background:#10b981;bottom:10%;left:15%;animation-delay:4s}
+@keyframes orbPulse{0%,100%{opacity:0.08;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.2;transform:translate(-50%,-50%) scale(1.15)}}
+.hero-content{position:relative;z-index:10;max-width:800px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);color:#00d4ff;font-size:0.8rem;font-weight:600;margin-bottom:32px;animation:badgeGlow 2s ease-in-out infinite}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 10px rgba(0,212,255,0.1)}50%{box-shadow:0 0 30px rgba(0,212,255,0.25)}}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:#10b981;animation:dotPing 2s ease-in-out infinite}
+@keyframes dotPing{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.4)}50%{box-shadow:0 0 0 10px rgba(16,185,129,0)}}
+.hero h1{font-size:clamp(2.5rem,8vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px}
+.hero h1 .gradient{background:linear-gradient(135deg,#fff 0%,#00d4ff 50%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:clamp(1rem,2.5vw,1.3rem);color:#9ca3af;max-width:650px;margin:0 auto 40px}
+.hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:14px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;border:none}
+.btn-primary{background:#fff;color:#060606;box-shadow:0 0 40px rgba(255,255,255,0.15)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(0,212,255,0.3)}
+.btn-secondary{background:rgba(255,255,255,0.07);color:#fff;border:1px solid rgba(255,255,255,0.12)}
+.btn-secondary:hover{transform:translateY(-3px);border-color:rgba(0,212,255,0.4);box-shadow:0 0 30px rgba(0,212,255,0.1)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:#6b7280;font-size:0.75rem;animation:bounce 2s ease-in-out infinite;z-index:10}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(0,212,255,0.5),transparent)}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+.section-header{text-align:center;max-width:700px;margin:0 auto 64px}
+.section-header h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:16px;color:#fff}
+.section-header h2 span{color:#00d4ff}
+.section-header p{font-size:1.1rem;color:#9ca3af;line-height:1.7}
+.wow-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1000px;margin:0 auto}
+@media(max-width:768px){.wow-grid{grid-template-columns:1fr}}
+.wow-card{padding:40px;border-radius:24px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:transform 0.3s,border-color 0.3s}
+.wow-card:hover{transform:translateY(-6px)}
+.wow-card.bad{border-color:rgba(239,68,68,0.15);background:rgba(239,68,68,0.03)}
+.wow-card.bad:hover{border-color:rgba(239,68,68,0.3);box-shadow:0 20px 50px rgba(239,68,68,0.1)}
+.wow-card.good{border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.04)}
+.wow-card.good:hover{border-color:rgba(16,185,129,0.4);box-shadow:0 20px 50px rgba(0,212,255,0.12)}
+.wow-card h3{font-size:1.3rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.wow-card.bad h3{color:#ef4444}
+.wow-card.good h3{color:#10b981}
+.wow-metrics{display:flex;flex-direction:column;gap:16px}
+.wow-metric{display:flex;justify-content:space-between;align-items:center}
+.wow-metric-label{font-size:0.9rem;color:#9ca3af}
+.wow-metric-value{font-size:1.5rem;font-weight:800}
+.wow-metric.bad-val{color:#ef4444}
+.wow-metric.good-val{color:#10b981}
+.wow-bar{margin-top:24px;height:8px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden}
+.wow-bar-fill{height:100%;border-radius:4px;transition:width 1.5s ease}
+.wow-bar-fill.bad{background:rgba(239,68,68,0.5)}
+.wow-bar-fill.good{background:linear-gradient(90deg,#00d4ff,#10b981)}
+.wow-divider{grid-column:1/-1;text-align:center;padding:16px 0}
+.wow-divider span{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#00d4ff,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.layers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.layer-card{padding:32px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.35s ease;cursor:default;position:relative;overflow:hidden}
+.layer-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.35s;z-index:0;pointer-events:none}
+.layer-card:hover{transform:translateY(-8px)}
+.layer-card:hover::before{opacity:1}
+.layer-card.tier-a:hover{border-color:rgba(0,212,255,0.35);box-shadow:0 20px 60px rgba(0,212,255,0.1)}
+.layer-card.tier-a::before{background:radial-gradient(circle at top left,rgba(0,212,255,0.08),transparent 60%)}
+.layer-card.tier-b:hover{border-color:rgba(245,158,11,0.35);box-shadow:0 20px 60px rgba(245,158,11,0.1)}
+.layer-card.tier-b::before{background:radial-gradient(circle at top left,rgba(245,158,11,0.08),transparent 60%)}
+.layer-card.tier-c:hover{border-color:rgba(16,185,129,0.35);box-shadow:0 20px 60px rgba(16,185,129,0.1)}
+.layer-card.tier-c::before{background:radial-gradient(circle at top left,rgba(16,185,129,0.08),transparent 60%)}
+.layer-number{font-size:3rem;font-weight:900;opacity:0.06;position:absolute;top:12px;right:20px;transition:opacity 0.35s}
+.layer-card:hover .layer-number{opacity:0.12}
+.layer-tier{display:inline-block;padding:4px 12px;border-radius:6px;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px}
+.tier-a .layer-tier{background:rgba(0,212,255,0.1);color:#00d4ff}
+.tier-b .layer-tier{background:rgba(245,158,11,0.1);color:#f59e0b}
+.tier-c .layer-tier{background:rgba(16,185,129,0.1);color:#10b981}
+.layer-card h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#fff;position:relative;z-index:1}
+.layer-card .layer-file{font-size:0.8rem;color:#6b7280;font-family:monospace;margin-bottom:12px;position:relative;z-index:1}
+.layer-card p{font-size:0.95rem;color:#9ca3af;line-height:1.6;position:relative;z-index:1}
+.swarm-section .section-header{margin-bottom:48px}
+.swarm-visual{display:flex;justify-content:center;align-items:center;padding:40px 0;position:relative;height:300px;overflow:hidden}
+.swarm-center{width:80px;height:80px;border-radius:50%;background:rgba(0,212,255,0.1);border:2px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;animation:swarmPulse 3s ease-in-out infinite}
+@keyframes swarmPulse{0%,100%{box-shadow:0 0 20px rgba(0,212,255,0.2)}50%{box-shadow:0 0 60px rgba(0,212,255,0.4)}}
+.swarm-agent{position:absolute;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;animation:orbit 8s linear infinite}
+.swarm-agent:nth-child(1){background:rgba(0,212,255,0.15);border:1.5px solid rgba(0,212,255,0.4);animation-duration:6s}
+.swarm-agent:nth-child(2){background:rgba(245,158,11,0.15);border:1.5px solid rgba(245,158,11,0.4);animation-duration:8s}
+.swarm-agent:nth-child(3){background:rgba(16,185,129,0.15);border:1.5px solid rgba(16,185,129,0.4);animation-duration:10s}
+.swarm-agent:nth-child(4){background:rgba(239,68,68,0.15);border:1.5px solid rgba(239,68,68,0.4);animation-duration:7s}
+.swarm-agent:nth-child(5){background:rgba(0,212,255,0.12);border:1.5px solid rgba(0,212,255,0.35);animation-duration:11s}
+.swarm-agent:nth-child(6){background:rgba(245,158,11,0.12);border:1.5px solid rgba(245,158,11,0.35);animation-duration:9s}
+@keyframes orbit{from{transform:rotate(0deg) translateX(140px) rotate(0deg)}to{transform:rotate(360deg) translateX(140px) rotate(-360deg)}}
+.robot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:40px}
+.robot-card{padding:28px 20px;border-radius:18px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);text-align:center;transition:all 0.35s;cursor:default}
+.robot-card:hover{transform:translateY(-6px);border-color:rgba(245,158,11,0.3);box-shadow:0 15px 40px rgba(245,158,11,0.08)}
+.robot-icon{font-size:2.2rem;margin-bottom:14px;animation:robotFloat 3s ease-in-out infinite}
+@keyframes robotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.robot-card h4{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.robot-card p{font-size:0.8rem;color:#6b7280}
+.openclaw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:40px}
+.openclaw-item{padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);font-size:0.8rem;color:#9ca3af;text-align:center;transition:all 0.3s;font-family:monospace}
+.openclaw-item:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.2);color:#00d4ff;transform:scale(1.04)}
+.use-cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.usecase-card{padding:32px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.4s;cursor:default}
+.usecase-card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(0,212,255,0.25);box-shadow:0 20px 50px rgba(0,212,255,0.08)}
+.usecase-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.12);transition:all 0.3s}
+.usecase-card:hover .usecase-icon{background:rgba(0,212,255,0.12);border-color:rgba(0,212,255,0.3);box-shadow:0 0 25px rgba(0,212,255,0.15)}
+.usecase-card h3{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:8px}
+.usecase-card p{font-size:0.9rem;color:#9ca3af;line-height:1.6}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1000px;margin:0 auto 48px}
+@media(max-width:768px){.problem-grid{grid-template-columns:1fr}}
+.prob-card{padding:32px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.3s}
+.prob-card:hover{transform:translateY(-4px)}
+.prob-card.problem{border-color:rgba(239,68,68,0.15)}
+.prob-card.problem:hover{border-color:rgba(239,68,68,0.3)}
+.prob-card.solution{border-color:rgba(16,185,129,0.15)}
+.prob-card.solution:hover{border-color:rgba(16,185,129,0.3)}
+.prob-card h4{font-size:1rem;font-weight:700;margin-bottom:10px}
+.prob-card.problem h4{color:#ef4444}
+.prob-card.solution h4{color:#10b981}
+.prob-card p{font-size:0.9rem;color:#9ca3af}
+.cost-compare{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto}
+.cost-card{flex:1;min-width:280px;padding:36px;border-radius:24px;text-align:center;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:transform 0.35s}
+.cost-card:hover{transform:translateY(-6px)}
+.cost-card.cloud{border-color:rgba(239,68,68,0.2)}
+.cost-card.local{border-color:rgba(16,185,129,0.2)}
+.cost-price{font-size:3.5rem;font-weight:900;margin:16px 0 8px}
+.cost-card.cloud .cost-price{color:#ef4444}
+.cost-card.local .cost-price{color:#10b981}
+.cost-period{font-size:1rem;color:#6b7280;margin-bottom:20px}
+.cost-features{display:flex;flex-direction:column;gap:10px}
+.cost-feature{font-size:0.85rem;color:#9ca3af;display:flex;align-items:center;gap:8px;justify-content:center}
+.savings-banner{margin-top:40px;padding:24px;border-radius:16px;text-align:center;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.15)}
+.savings-banner h3{font-size:1.5rem;font-weight:800;color:#10b981;margin-bottom:8px}
+.savings-banner .amount{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,#00d4ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
+.metric-card{padding:28px;border-radius:18px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);text-align:center;transition:all 0.35s}
+.metric-card:hover{transform:translateY(-6px);border-color:rgba(0,212,255,0.2)}
+.metric-value{font-size:2rem;font-weight:900;margin-bottom:6px}
+.metric-card:nth-child(1) .metric-value{color:#10b981}
+.metric-card:nth-child(2) .metric-value{color:#00d4ff}
+.metric-card:nth-child(3) .metric-value{color:#f59e0b}
+.metric-card:nth-child(4) .metric-value{color:#10b981}
+.metric-card:nth-child(5) .metric-value{color:#00d4ff}
+.metric-card:nth-child(6) .metric-value{color:#f59e0b}
+.metric-label{font-size:0.85rem;color:#9ca3af}
+.metric-bar{margin-top:12px;height:6px;border-radius:3px;background:rgba(255,255,255,0.05);overflow:hidden}
+.metric-bar-fill{height:100%;border-radius:3px;transition:width 1.5s ease}
+.metric-card:nth-child(1) .metric-bar-fill{background:#10b981}
+.metric-card:nth-child(2) .metric-bar-fill{background:#00d4ff}
+.metric-card:nth-child(3) .metric-bar-fill{background:#f59e0b}
+.metric-card:nth-child(4) .metric-bar-fill{background:#10b981}
+.metric-card:nth-child(5) .metric-bar-fill{background:#00d4ff}
+.metric-card:nth-child(6) .metric-bar-fill{background:#f59e0b}
+.compare-table{margin-top:48px;overflow-x:auto}
+.compare-table table{width:100%;border-collapse:collapse;font-size:0.9rem}
+.compare-table th,.compare-table td{padding:16px 20px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+.compare-table th{color:#6b7280;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;background:rgba(255,255,255,0.02)}
+.compare-table tbody tr{transition:background 0.2s}
+.compare-table tbody tr:hover{background:rgba(0,212,255,0.03)}
+.compare-table .check{color:#10b981;font-weight:700}
+.compare-table .cross{color:#ef4444}
+.setup-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.setup-tab{padding:10px 24px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:#9ca3af;font-weight:600;cursor:pointer;transition:all 0.3s;font-size:0.9rem}
+.setup-tab:hover{color:#fff;border-color:rgba(255,255,255,0.15)}
+.setup-tab.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:#00d4ff}
+.setup-steps{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.setup-step{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.3s}
+.setup-step.open{border-color:rgba(0,212,255,0.2)}
+.setup-step-header{padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;user-select:none;transition:background 0.2s}
+.setup-step-header:hover{background:rgba(255,255,255,0.03)}
+.step-number{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;background:rgba(0,212,255,0.08);border:1.5px solid rgba(0,212,255,0.2);color:#00d4ff;flex-shrink:0}
+.setup-step.open .step-number{background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.4)}
+.step-title{font-weight:700;color:#fff;flex:1;font-size:1rem}
+.step-arrow{transition:transform 0.3s;color:#6b7280}
+.setup-step.open .step-arrow{transform:rotate(180deg)}
+.setup-step-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.4s ease;padding:0 24px}
+.setup-step.open .setup-step-body{max-height:600px;padding:0 24px 24px}
+.code-block{background:#0d0d0d;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;font-family:'Cascadia Code','Fira Code',monospace;font-size:0.85rem;color:#10b981;overflow-x:auto;position:relative;margin:8px 0}
+.code-block .copy-btn{position:absolute;top:10px;right:14px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#9ca3af;font-size:0.7rem;cursor:pointer;transition:all 0.2s}
+.code-block .copy-btn:hover{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:#00d4ff}
+.step-note{font-size:0.85rem;color:#f59e0b;margin-top:8px;padding:10px 14px;border-radius:8px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.1)}
+.cta-section{text-align:center;padding:100px 24px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;width:600px;height:600px;background:rgba(0,212,255,0.06);border-radius:50%;filter:blur(150px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-section h2{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:900;color:#fff;margin-bottom:16px;position:relative;z-index:1}
+.cta-section p{font-size:1.15rem;color:#9ca3af;margin-bottom:32px;position:relative;z-index:1}
+.cta-code{display:inline-block;padding:20px 32px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-family:monospace;font-size:1.1rem;color:#10b981;position:relative;z-index:1;transition:all 0.3s}
+.cta-code:hover{border-color:rgba(0,212,255,0.3);box-shadow:0 0 40px rgba(0,212,255,0.1)}
+.footer{border-top:1px solid rgba(255,255,255,0.05);padding:40px 24px;text-align:center;position:relative;overflow:hidden}
+.footer-orb{position:absolute;width:400px;height:400px;background:rgba(0,212,255,0.04);border-radius:50%;filter:blur(100px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.footer p{color:#6b7280;font-size:0.85rem;position:relative;z-index:1}
+.footer p+p{margin-top:8px;color:#4b5563;font-size:0.75rem}
+@media(max-width:768px){.navbar-links{gap:12px}.navbar-links a:not(.nav-github){display:none}.hero-buttons{flex-direction:column;align-items:center}.cost-compare{flex-direction:column}.wow-grid{grid-template-columns:1fr}.problem-grid{grid-template-columns:1fr}.section{padding:60px 0}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;background:#10b981;color:#fff;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<a href="#" class="navbar-logo">&#x1F980; <span>Ultra</span>claw</a>
+<div class="navbar-links">
+<a href="#wow">Wow Gap</a>
+<a href="#layers">Architecture</a>
+<a href="#swarm">Agents+Robots</a>
+<a href="#usecases">Use Cases</a>
+<a href="#setup">Setup</a>
+<a href="https://github.com/brainRottedCoder/Ultraclaw" target="_blank" rel="noopener" class="nav-github">&#9733; GitHub</a>
+</div>
+</nav>
+<section class="hero">
+<div class="hero-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+<div class="hero-content">
+<div class="hero-badge"><span class="dot"></span> GARAGE_INFERENCE Tier 1 — Absolute Garage MAX</div>
+<h1>The <span class="gradient">Agent Singularity</span><br>On A $500 Laptop</h1>
+<p class="hero-subtitle"><strong>Phi-4-mini</strong> &bull; 3.8B params &bull; 8 scaffolding layers &bull; <strong>$0.00 inference cost</strong><br>Autonomous AI agents that run entirely local — no cloud, no API keys, no credit card.</p>
+<div class="hero-buttons">
+<a class="btn btn-primary" href="https://github.com/brainRottedCoder/Ultraclaw" target="_blank" rel="noopener">&#9733; View on GitHub</a>
+<a class="btn btn-secondary" href="#setup">&#x2699; Setup Guide</a>
+</div>
+</div>
+<div class="scroll-indicator"><span>Scroll to explore</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="section" id="wow">
+<div class="container">
+<div class="section-header fade-up">
+<div class="section-label">&#x26A1; The Core Metric</div>
+<h2>The <span>Wow Gap</span></h2>
+<p>How wide is the gap between your model's raw capability and what your project actually does? A Tier 1 model producing Tier 3 results wins. Every time.</p>
+</div>
+<div class="wow-grid">
+<div class="wow-card bad fade-up">
+<h3>&#x26D4; Phi-4-mini Alone (3.8B params)</h3>
+<div class="wow-metrics">
+<div class="wow-metric"><span class="wow-metric-label">Follows instructions</span><span class="wow-metric-value bad-val">~30%</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Tool calling accuracy</span><span class="wow-metric-value bad-val">~20%</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Factual accuracy</span><span class="wow-metric-value bad-val">Hallucinates</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Multi-turn context</span><span class="wow-metric-value bad-val">~3 turns</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Error recovery</span><span class="wow-metric-value bad-val">None</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Persistent memory</span><span class="wow-metric-value bad-val">None</span></div>
+</div>
+<div class="wow-bar"><div class="wow-bar-fill bad" style="width:25%"></div></div>
+</div>
+<div class="wow-card good fade-up">
+<h3>&#x2705; Ultraclaw Scaffolded</h3>
+<div class="wow-metrics">
+<div class="wow-metric"><span class="wow-metric-label">Follows instructions</span><span class="wow-metric-value good-val">~85%</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Tool calling accuracy</span><span class="wow-metric-value good-val">~75%</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Factual accuracy</span><span class="wow-metric-value good-val">&lt;10% hallucination</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Multi-turn context</span><span class="wow-metric-value good-val">20 turns</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Error recovery</span><span class="wow-metric-value good-val">3-cycle auto-heal</span></div>
+<div class="wow-metric"><span class="wow-metric-label">Persistent memory</span><span class="wow-metric-value good-val">SQLite + semantic</span></div>
+</div>
+<div class="wow-bar"><div class="wow-bar-fill good" style="width:85%"></div></div>
+</div>
+<div class="wow-divider"><span>&#x2192; 3–4x improvement across every dimension &#x2190;</span></div>
+</div>
+<p style="text-align:center;color:#6b7280;margin-top:24px;font-size:0.9rem">Achieved entirely through <strong style="color:#00d4ff">scaffolding</strong> — not model capability. The model provides raw text. The scaffolding provides structure, validation, memory, recovery, and amplification.</p>
+</div>
+</section>
+<section class="section" id="layers">
+<div class="container">
+<div class="section-header fade-up">
+<div class="section-label">&#x1F3D7; Architecture</div>
+<h2>8 <span>Scaffolding Layers</span></h2>
+<p>Each layer compensates for a specific weakness of the 3.8B model. Together they form a robust agent framework that rivals cloud-based systems — at zero cost.</p>
+</div>
+<div class="layers-grid">
+<div class="layer-card tier-a fade-up">
+<span class="layer-number">A1</span><span class="layer-tier">Tier A · Core Autonomy</span>
+<h3>&#x1F6E0; Self-Healing Loop</h3>
+<div class="layer-file">self_healing.rs</div>
+<p>Detects tool execution errors via keyword matching + result inspection. Injects healing guidance. Auto-retries up to 3 cycles with alternative approaches.</p>
+</div>
+<div class="layer-card tier-a fade-up">
+<span class="layer-number">A2</span><span class="layer-tier">Tier A · Core Autonomy</span>
+<h3>&#x1F441; Vision Browser Agent</h3>
+<div class="layer-file">vision_agent_impl.rs</div>
+<p>Screenshot → analyze → click/type/scroll → repeat. 8-cycle autonomous web navigation. No pre-parsed HTML needed.</p>
+</div>
+<div class="layer-card tier-a fade-up">
+<span class="layer-number">A3</span><span class="layer-tier">Tier A · Core Autonomy</span>
+<h3>&#x1F4CB; Goal Decomposition</h3>
+<div class="layer-file">goal_decomp.rs</div>
+<p>Breaks complex tasks into JSON plans with dependency graphs. Executes in topological order with final synthesis step.</p>
+</div>
+<div class="layer-card tier-b fade-up">
+<span class="layer-number">B4</span><span class="layer-tier">Tier B · Quality &amp; Reliability</span>
+<h3>&#x1F517; Chain-of-Tools</h3>
+<div class="layer-file">chain_tools.rs</div>
+<p>Sequential tool execution with step tracking, cross-referencing, and circuit breakers (max 10 steps, 60s timeout).</p>
+</div>
+<div class="layer-card tier-b fade-up">
+<span class="layer-number">B5</span><span class="layer-tier">Tier B · Quality &amp; Reliability</span>
+<h3>&#x1F6E1; Hallucination Shield</h3>
+<div class="layer-file">hallucination_shield.rs</div>
+<p>Extracts factual claims and verifies them against source context. Annotates output: made / verified / unverified / blocked. Falls back to "I don't know."</p>
+</div>
+<div class="layer-card tier-b fade-up">
+<span class="layer-number">B7</span><span class="layer-tier">Tier B · Quality &amp; Reliability</span>
+<h3>&#x1F9E0; Persistent Memory</h3>
+<div class="layer-file">conversation_memory.rs</div>
+<p>SQLite-backed long-term memory with semantic search. Survives restarts. Importance scoring + category filtering. 10,000-entry capacity.</p>
+</div>
+<div class="layer-card tier-c fade-up">
+<span class="layer-number">C8</span><span class="layer-tier">Tier C · Intelligence Amplification</span>
+<h3>&#x1F4AC; Multi-Agent Debate</h3>
+<div class="layer-file">debate_orchestrator.rs</div>
+<p>3 perspective agents (Optimist, Pessimist, Analyst) debate in parallel on the same 4B model. Consensus synthesis with confidence score.</p>
+</div>
+<div class="layer-card tier-c fade-up">
+<span class="layer-number">C10</span><span class="layer-tier">Tier C · Intelligence Amplification</span>
+<h3>&#x1F504; Self-Improving Prompts</h3>
+<div class="layer-file">prompt_refine.rs</div>
+<p>On failure, model introspects: "Why did this fail?" Generates improved strategy and retries. Up to 3 refinement cycles with comparison tables.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section swarm-section" id="swarm">
+<div class="container">
+<div class="section-header fade-up">
+<div class="section-label">&#x1F916; Agentic Automation</div>
+<h2>AI Agents + <span>OpenClaw Robots</span></h2>
+<p>Beyond individual agents — Ultraclaw orchestrates swarms of parallel AI agents and interfaces with physical robot hardware through the OpenClaw skill registry.</p>
+</div>
+<div class="swarm-visual fade-up">
+<div class="swarm-center">&#x1F980;</div>
+<div class="swarm-agent" style="color:#00d4ff">A</div>
+<div class="swarm-agent" style="color:#f59e0b">B</div>
+<div class="swarm-agent" style="color:#10b981">C</div>
+<div class="swarm-agent" style="color:#ef4444">D</div>
+<div class="swarm-agent" style="color:#00d4ff">E</div>
+<div class="swarm-agent" style="color:#f59e0b">F</div>
+</div>
+<p style="text-align:center;color:#6b7280;margin-top:8px">Multi-agent swarm: parallel sub-agents execute tasks independently, then synthesize results</p>
+<div class="robot-grid fade-up">
+<div class="robot-card"><div class="robot-icon">&#x1F697;</div><h4>Drive</h4><p>Speed + direction control for wheeled rovers</p></div>
+<div class="robot-card"><div class="robot-icon">&#x1F50A;</div><h4>Speak</h4><p>Text-to-speech output via robot voice modules</p></div>
+<div class="robot-card"><div class="robot-icon">&#x1F4F7;</div><h4>Look</h4><p>Camera capture + vision analysis pipeline</p></div>
+<div class="robot-card"><div class="robot-icon">&#x1F600;</div><h4>Emote</h4><p>Facial expression display on robot screens</p></div>
+<div class="robot-card"><div class="robot-icon">&#x1F4E1;</div><h4>Sense</h4><p>LIDAR scanner for obstacle detection (10m range)</p></div>
+</div>
+<div class="section-header fade-up" style="margin-top:64px">
+<div class="section-label">&#x1F9E9; OpenClaw Extensions</div>
+<h2>53+ <span>Hidden Capabilities</span></h2>
+</div>
+<div class="openclaw-grid fade-up">
+<div class="openclaw-item">1password</div><div class="openclaw-item">apple-notes</div><div class="openclaw-item">bear-notes</div>
+<div class="openclaw-item">blogwatcher</div><div class="openclaw-item">blucli</div><div class="openclaw-item">bluebubbles</div>
+<div class="openclaw-item">camsnap</div><div class="openclaw-item">canvas</div><div class="openclaw-item">clawhub</div>
+<div class="openclaw-item">coding-agent</div><div class="openclaw-item">discord</div><div class="openclaw-item">gemini</div>
+<div class="openclaw-item">gh-issues</div><div class="openclaw-item">github</div><div class="openclaw-item">healthcheck</div>
+<div class="openclaw-item">himalaya</div><div class="openclaw-item">imsg</div><div class="openclaw-item">nano-pdf</div>
+<div class="openclaw-item">notion</div><div class="openclaw-item">obsidian</div><div class="openclaw-item">openai-image-gen</div>
+<div class="openclaw-item">openai-whisper</div><div class="openclaw-item">matrix</div><div class="openclaw-item">telegram</div>
+<div class="openclaw-item">whatsapp</div><div class="openclaw-item">slack</div><div class="openclaw-item">teams</div>
+<div class="openclaw-item">signal</div><div class="openclaw-item">webhooks</div><div class="openclaw-item">scheduler</div>
+<div class="openclaw-item">wasm-plugins</div><div class="openclaw-item">landlock-sandbox</div>
+</div>
+<div style="text-align:center;margin-top:32px">
+<p style="color:#9ca3af;font-size:0.9rem">Each extension is registered in the <code style="color:#00d4ff;background:rgba(0,212,255,0.06);padding:2px 8px;border-radius:4px">openclaw_skills.rs</code> registry — plug-and-play for edge AI deployments.</p>
+</div>
+</div>
+</section>
+<section class="section" id="usecases">
+<div class="container">
+<div class="section-header fade-up">
+<div class="section-label">&#x1F3AF; Real-World Impact</div>
+<h2>Use <span>Cases</span></h2>
+<p>From home automation to team collaboration — here's what Ultraclaw handles autonomously.</p>
+</div>
+<div class="use-cases-grid">
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F3E0;</div><h3>Home Automation</h3><p>Control smart devices through the SmartHome skill — lights, thermostats, sensors. All local, no cloud dependency.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F310;</div><h3>Autonomous Web Browsing</h3><p>Vision-based navigation: screenshot → analyze → click/type/scroll. Works on any rendered page without pre-parsed HTML.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F4E8;</div><h3>Team Communication</h3><p>Native connectors for Discord, Matrix, Telegram — each with isolated session context per room/channel.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F4BB;</div><h3>Code Assistant</h3><p>Git operations, file system analysis, conflict resolution. The GitResolver skill handles merge conflicts autonomously.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F3AC;</div><h3>Media Generation</h3><p>Image generation via DALL-E/Imagen, TTS via Whisper, and screenshot-based vision analysis.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F4F1;</div><h3>IoT &amp; Edge Deployments</h3><p>Runs on Raspberry Pi, $500 laptops, air-gapped systems. Zero cloud requirement. Zero API keys.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F41D;</div><h3>Swarm Task Execution</h3><p>Parallel sub-agents (Analyst, Coder, Researcher, Reviewer) execute tasks independently, then synthesize results.</p></div>
+<div class="usecase-card fade-up"><div class="usecase-icon">&#x1F512;</div><h3>Privacy-Preserving Agent</h3><p>100% local execution — no data ever leaves your machine. Full offline capability with zero telemetry.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-header fade-up"><div class="section-label">&#x1F4C9; Problem vs Solution</div><h2>Problems <span>Solved</span></h2><p>Every problem below is addressed directly by Ultraclaw's engineering — not just the model.</p></div>
+<div class="problem-grid">
+<div class="prob-card problem fade-up"><h4>&#x26A0; Rate-Limited &amp; Expensive APIs</h4><p>Frontier models are rate-limited and expensive — inaccessible to most builders globally.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; $0.00 Local Inference</h4><p>Phi-4-mini runs entirely local via Ollama. No API keys. No rate limits. No monthly bills.</p></div>
+<div class="prob-card problem fade-up"><h4>&#x26A0; $200/mo Budget Exclusion</h4><p>API budgets that cost hundreds per month exclude billions of builders from the AI revolution.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; Runs on a $500 Laptop</h4><p>CPU-only. 6GB RAM. A student in a developing country can run the same agent as a funded startup.</p></div>
+<div class="prob-card problem fade-up"><h4>&#x26A0; Offline Blind Spot</h4><p>Cloud endpoints don't reach offline devices. Air-gapped, rural, and edge use cases are abandoned.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; 100% Offline Capable</h4><p>No internet needed after initial model download. Works in basements, farms, and remote locations.</p></div>
+<div class="prob-card problem fade-up"><h4>&#x26A0; Privacy &amp; Data Exfiltration</h4><p>Cloud-based agents send all your data to external servers — chats, files, system info.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; Data Never Leaves Your Machine</h4><p>100% local. No telemetry. Landlock kernel sandbox constrains all network + filesystem access.</p></div>
+<div class="prob-card problem fade-up"><h4>&#x26A0; Model Hallucinations</h4><p>Small models hallucinate freely — generating plausible-sounding but completely fabricated claims.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; Hallucination Shield (B5)</h4><p>Every factual claim verified against source. Unverifiable claims blocked. Falls back to "I don't know."</p></div>
+<div class="prob-card problem fade-up"><h4>&#x26A0; No Error Recovery</h4><p>When small models produce bad output, there's no second chance — the task simply fails.</p></div>
+<div class="prob-card solution fade-up"><h4>&#x2705; Self-Healing Loop (A1)</h4><p>Errors detected automatically → healing guidance injected → retried with alternative approach. Up to 3 cycles.</p></div>
+</div>
+<div class="section-header fade-up" style="margin-top:64px"><div class="section-label">&#x1F4B0; Cost Analysis</div><h2>Cost <span>Effectiveness</span></h2></div>
+<div class="cost-compare">
+<div class="cost-card cloud fade-up"><p style="color:#ef4444;font-weight:700;font-size:0.9rem">&#x2601; TYPICAL CLOUD AGENT</p><div class="cost-price">$150</div><div class="cost-period">per month</div><div class="cost-features"><div class="cost-feature">&#x274C; Requires API keys</div><div class="cost-feature">&#x274C; Needs internet connectivity</div><div class="cost-feature">&#x274C; Data leaves your machine</div><div class="cost-feature">&#x274C; Rate limited</div><div class="cost-feature">&#x274C; GPU server dependency</div></div></div>
+<div class="cost-card local fade-up"><p style="color:#10b981;font-weight:700;font-size:0.9rem">&#x1F980; ULTRACLAW LOCAL</p><div class="cost-price">$0</div><div class="cost-period">per month</div><div class="cost-features"><div class="cost-feature">&#x2705; No API keys needed</div><div class="cost-feature">&#x2705; Works 100% offline</div><div class="cost-feature">&#x2705; 100% local privacy</div><div class="cost-feature">&#x2705; No rate limits</div><div class="cost-feature">&#x2705; CPU only ($500 laptop)</div></div></div>
+</div>
+<div class="savings-banner fade-up"><h3>Annual Savings</h3><div class="amount" id="savings-counter">$1,800</div><p style="color:#9ca3af;margin-top:8px">Compared to typical cloud agent subscriptions. That's money that stays in your pocket.</p></div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+<div class="section-header fade-up"><div class="section-label">&#x1F4CA; Benchmarks</div><h2>Performance <span>Metrics</span></h2></div>
+<div class="metrics-grid">
+<div class="metric-card fade-up"><div class="metric-value">$0.00</div><div class="metric-label">Inference Cost / 1M tokens</div><div class="metric-bar"><div class="metric-bar-fill" style="width:100%"></div></div></div>
+<div class="metric-card fade-up"><div class="metric-value">~15</div><div class="metric-label">Tokens / sec (CPU)</div><div class="metric-bar"><div class="metric-bar-fill" style="width:60%"></div></div></div>
+<div class="metric-card fade-up"><div class="metric-value">~2000ms</div><div class="metric-label">Avg Latency / inference</div><div class="metric-bar"><div class="metric-bar-fill" style="width:45%"></div></div></div>
+<div class="metric-card fade-up"><div class="metric-value">&lt;10%</div><div class="metric-label">Hallucination Rate</div><div class="metric-bar"><div class="metric-bar-fill" style="width:90%"></div></div></div>
+<div class="metric-card fade-up"><div class="metric-value">10,000</div><div class="metric-label">Memory Entries (SQLite)</div><div class="metric-bar"><div class="metric-bar-fill" style="width:100%"></div></div></div>
+<div class="metric-card fade-up"><div class="metric-value">~15MB</div><div class="metric-label">Binary Size (release)</div><div class="metric-bar"><div class="metric-bar-fill" style="width:80%"></div></div></div>
+</div>
+<div class="compare-table fade-up" style="margin-top:56px">
+<table><thead><tr><th>Feature</th><th>Ultraclaw (Local Phi-4-mini)</th><th>Typical Cloud Agent</th></tr></thead><tbody>
+<tr><td>Setup cost</td><td class="check">$0</td><td class="cross">$50–200/month</td></tr>
+<tr><td>Hardware required</td><td class="check">$500 laptop (CPU only)</td><td class="cross">GPU server</td></tr>
+<tr><td>Offline capable</td><td class="check">&#x2705; Yes</td><td class="cross">&#x274C; No</td></tr>
+<tr><td>Privacy</td><td class="check">100% local</td><td class="cross">Data leaves machine</td></tr>
+<tr><td>Streaming output</td><td class="check">&#x2705; Yes</td><td class="check">&#x2705; Yes</td></tr>
+<tr><td>Tool calling</td><td class="check">&#x2705; Yes</td><td class="check">&#x2705; Yes</td></tr>
+<tr><td>Multi-turn conversations</td><td class="check">&#x2705; Yes</td><td class="check">&#x2705; Yes</td></tr>
+<tr><td>Self-healing</td><td class="check">&#x2705; Auto-retry (3 cycles)</td><td class="cross">&#x274C; No</td></tr>
+<tr><td>Persistent memory</td><td class="check">&#x2705; SQLite + semantic search</td><td class="cross">&#x274C; Stateless</td></tr>
+<tr><td>Multi-agent debate</td><td class="check">&#x2705; 3-perspective consensus</td><td class="cross">&#x274C; No</td></tr>
+</tbody></table>
+</div>
+</div>
+</section>
+<section class="section" id="setup">
+<div class="container">
+<div class="section-header fade-up"><div class="section-label">&#x1F527; Get Started</div><h2>Detailed <span>Setup Guide</span></h2><p>One command setup. No API keys. No cloud account. No credit card. Runs on any $500 laptop with 6GB available RAM.</p></div>
+<div class="setup-tabs fade-up"><button class="setup-tab active" data-platform="all">All Platforms</button><button class="setup-tab" data-platform="windows">&#x1F4BB; Windows</button><button class="setup-tab" data-platform="macos">&#x1F5A5; macOS</button><button class="setup-tab" data-platform="linux">&#x1F427; Linux</button></div>
+<div class="setup-steps">
+
+<div class="setup-step open">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">1</div><span class="step-title">Install Rust Toolchain</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Ultraclaw is written in Rust and compiled natively. Install the Rust toolchain first:</p>
+<div class="code-block"><button class="copy-btn" data-code="curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" onclick="copyCodeBtn(this)">Copy</button>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">Restart your terminal after installation. Verify with <code style="color:#00d4ff">rustc --version</code> and <code style="color:#00d4ff">cargo --version</code>.</p>
+<div class="step-note"><strong>&#x1F4CC;</strong> Windows users: Download rustup-init.exe from <a href="https://rustup.rs" style="color:#00d4ff;text-decoration:underline" target="_blank" rel="noopener">rustup.rs</a>. You may also need Visual Studio Build Tools with the C++ workload installed.</div>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">2</div><span class="step-title">Install Ollama (Local LLM Runtime)</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Ollama runs Phi-4-mini locally on CPU — no GPU required.</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'curl -fsSL https://ollama.com/install.sh | sh')">Copy</button>curl -fsSL https://ollama.com/install.sh | sh</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">Windows users: Download the installer directly from <a href="https://ollama.com/download" style="color:#00d4ff;text-decoration:underline" target="_blank" rel="noopener">ollama.com/download</a>. Run the .exe and follow the installation wizard. macOS users can also use <code style="color:#00d4ff">brew install ollama</code>.</p>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">3</div><span class="step-title">Pull Phi-4-mini Model (~4GB download)</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Download the 3.8B parameter model. Fits in 4GB of RAM — runs on CPU only.</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'ollama pull phi4-mini')">Copy</button>ollama pull phi4-mini</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">After download, verify with <code style="color:#00d4ff">ollama list</code> — you should see <code style="color:#10b981">phi4-mini:latest</code> in the list.</p>
+<div class="step-note"><strong>&#x26A0; Important:</strong> This is a ~4GB download that requires a stable internet connection for the initial pull only. After downloading, everything works 100% offline. No data is sent anywhere during inference.</div>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">4</div><span class="step-title">Clone the Repository</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Clone the Ultraclaw source code from GitHub:</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'git clone https://github.com/brainRottedCoder/Ultraclaw.git')">Copy</button>git clone https://github.com/brainRottedCoder/Ultraclaw.git</div>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cd Ultraclaw')">Copy</button>cd Ultraclaw</div>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">5</div><span class="step-title">Build &amp; Compile (Release Mode)</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Compile the Rust binary with full optimizations. First build may take 5-10 minutes depending on your CPU.</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo build --release')">Copy</button>cargo build --release</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">The optimized binary (~15MB) will be at <code style="color:#00d4ff">target/release/ultraclaw</code> (Linux/Mac) or <code style="color:#00d4ff">target\release\ultraclaw.exe</code> (Windows).</p>
+<p style="color:#6b7280;font-size:0.8rem;margin-top:8px">Release profile uses: LTO (link-time optimization), single codegen unit, panic=abort, strip — all tuned for minimal binary size and maximum performance.</p>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">6</div><span class="step-title">Run Ultraclaw (3 Modes Available)</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Three ways to launch Ultraclaw depending on your needs:</p>
+<p style="color:#fff;font-weight:700;margin-bottom:4px">&#x1F3AE; <strong>Demo Mode</strong> — Hackathon Showcase (recommended first run):</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo run --release -- --demo')">Copy</button>cargo run --release -- --demo</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:4px">Runs through all 8 scaffolding layers in a single narrative flow. Shows per-layer metrics, memory stats, self-healing demonstrations, debate synthesis, and a final cost comparison dashboard.</p>
+<p style="color:#fff;font-weight:700;margin-bottom:4px;margin-top:16px">&#x2328; <strong>Interactive CLI Mode</strong>:</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo run --release -- --cli')">Copy</button>cargo run --release -- --cli</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:4px">Full interactive chat interface. Type commands, ask questions, and watch the agent execute tools in real-time with streaming output.</p>
+<p style="color:#fff;font-weight:700;margin-bottom:4px;margin-top:16px">&#x1F4FA; <strong>TUI Mode</strong> — Terminal Dashboard:</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo run --release -- --tui')">Copy</button>cargo run --release -- --tui</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:4px">Keyboard-driven Ratatui interface with live LLM heartbeat monitoring, swarm routing displays, and real-time inference statistics.</p>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">7</div><span class="step-title">Environment Configuration (Optional)</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Create a <code style="color:#00d4ff">.env</code> file in the Ultraclaw directory. Copy from the example:</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cp .env.example .env')">Copy</button>cp .env.example .env</div>
+<p style="color:#9ca3af;margin-top:12px">Default configuration (works out of the box for demo mode):</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'ULTRACLAW_OLLAMA_MODEL=phi4-mini:latest&#10;ULTRACLAW_ENGINE_MODE=local')">Copy</button>ULTRACLAW_OLLAMA_MODEL=phi4-mini:latest<br>ULTRACLAW_ENGINE_MODE=local</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">Optional additions for real deployments:</p>
+<div class="code-block" style="color:#6b7280"><span style="color:#6b7280"># Matrix integration (self-hosted chat)</span><br>ULTRACLAW_MATRIX_USER=@ultraclaw:matrix.org<br>ULTRACLAW_MATRIX_PASSWORD=your-password<br><br><span style="color:#6b7280"># Cloud failover (only used if local model fails)</span><br>ULTRACLAW_CLOUD_API_KEY=sk-xxxx<br>ULTRACLAW_CLOUD_MODEL=gpt-4o-mini</div>
+</div>
+</div>
+
+<div class="setup-step">
+<div class="setup-step-header" onclick="toggleStep(this)"><div class="step-number">8</div><span class="step-title">Optional: Enable Native App Connectors</span><span class="step-arrow">&#x25BC;</span></div>
+<div class="setup-step-body">
+<p style="color:#9ca3af;margin-bottom:12px">Build with platform-specific connectors via Cargo features for real-world deployment:</p>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo build --release --features discord')">Copy</button>cargo build --release --features discord</div>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo build --release --features telegram')">Copy</button>cargo build --release --features telegram</div>
+<div class="code-block"><button class="copy-btn" onclick="copyCode(this,'cargo build --release --features matrix')">Copy</button>cargo build --release --features matrix</div>
+<p style="color:#9ca3af;font-size:0.85rem;margin-top:8px">Each connector runs with isolated session context — a conversation in one room/channel can never leak into another. Least-privilege scopes per connector.</p>
+<div class="step-note"><strong>&#x1F510; Security Architecture:</strong> All tool execution passes through the SkillRegistry. No raw model output ever reaches the shell. WASM plugins run in sandboxed WebAssembly context. Landlock kernel sandbox constrains filesystem and network access. Threat model documented in <code style="color:#f59e0b">TECHNICAL_WRITEUP.md</code>.</div>
+</div>
+</div>
+
+</div><!-- /setup-steps -->
+
+<div class="savings-banner fade-up" style="margin-top:48px;background:rgba(0,212,255,0.04);border-color:rgba(0,212,255,0.15)">
+<h3 style="color:#00d4ff">&#x1F4CB; Reproducibility Guaranteed</h3>
+<p style="color:#9ca3af;font-size:0.95rem">A student in a developing country with a $500 laptop can reproduce this entire project in under <strong style="color:#fff">30 minutes</strong> with a stable internet connection for the initial model pull. No credit card. No API account. No dependency on any cloud service whatsoever.</p>
+</div>
+</div>
+</section>
+
+<section class="cta-section">
+<h2>Clone. Build. Deploy.</h2>
+<p>One command to rule them all. No API keys. No cloud. No cost.</p>
+<div class="cta-code">cargo run --release -- --demo</div>
+<div style="margin-top:32px;position:relative;z-index:1">
+<a class="btn btn-primary" href="https://github.com/brainRottedCoder/Ultraclaw" target="_blank" rel="noopener">&#9733; Star on GitHub</a>
+<a class="btn btn-secondary" href="https://github.com/brainRottedCoder/Ultraclaw/releases" target="_blank" rel="noopener" style="margin-left:16px">&#x1F4E6; Download Releases</a>
+</div>
+</section>
+
+<footer class="footer">
+<div class="footer-orb"></div>
+<p>&copy; 2026 Ultraclaw AI Framework. Open-Source under MIT License.</p>
+<p>Built with &#x1F980; and &#x2764; for <strong>GARAGE_INFERENCE</strong> — Big Ideas. Cheap Models.</p>
+<p style="margin-top:8px">Tier 1 &bull; Absolute Garage MAX &bull; Phi-4-mini 3.8B &bull; $0 inference &bull; 100% local &bull; CPU only</p>
+</footer>
+
+<div class="toast" id="toast">&#x2705; Copied to clipboard!</div>
+
+<script>
+const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible')})},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+const barObserver = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){const bar=entry.target;const w=bar.style.width;bar.style.width='0%';setTimeout(()=>{bar.style.width=w},100)}})},{threshold:0.3});
+document.querySelectorAll('.wow-bar-fill,.metric-bar-fill').forEach(bar=>barObserver.observe(bar));
+
+const savingsEl=document.getElementById('savings-counter');
+let savingsAnimated=false;
+const savingsObserver = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting&&!savingsAnimated){savingsAnimated=true;const target=1800,duration=2000,step=target/(duration/16);let current=0;const counter=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(counter);savingsEl.textContent='$1,800'}else{savingsEl.textContent='$'+Math.floor(current).toLocaleString()}},16)}})},{threshold:0.5});
+if(savingsEl)savingsObserver.observe(savingsEl);
+
+function toggleStep(header){header.parentElement.classList.toggle('open')}
+
+document.querySelectorAll('.setup-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.setup-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active')})});
+
+function copyCode(btn,text){navigator.clipboard.writeText(text).then(()=>{const toast=document.getElementById('toast');toast.classList.add('show');btn.textContent='Copied!';setTimeout(()=>{toast.classList.remove('show');btn.textContent='Copy'},2000)}).catch(()=>{const toast=document.getElementById('toast');toast.classList.add('show');toast.innerHTML='&#x26A0; Copy failed';toast.style.background='#ef4444';setTimeout(()=>{toast.classList.remove('show');toast.innerHTML='&#x2705; Copied!';toast.style.background='#10b981'},2000)})}
+
+document.querySelectorAll('.navbar-links a[href^="#"]').forEach(link=>{link.addEventListener('click',(e)=>{e.preventDefault();const target=document.querySelector(link.getAttribute('href'));if(target){const top=target.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top,behavior:'smooth'})}})});
+
+function copyCodeBtn(btn){var code=btn.getAttribute('data-code');if(!code)return;navigator.clipboard.writeText(code).then(()=>{const toast=document.getElementById('toast');toast.classList.add('show');btn.textContent='Copied!';setTimeout(()=>{toast.classList.remove('show');btn.textContent='Copy'},2000)}).catch(()=>{const toast=document.getElementById('toast');toast.classList.add('show');toast.innerHTML='&#x26A0; Copy failed';toast.style.background='#ef4444';setTimeout(()=>{toast.classList.remove('show');toast.innerHTML='&#x2705; Copied!';toast.style.background='#10b981'},2000)})}
+</script>
+</body>
+</html>

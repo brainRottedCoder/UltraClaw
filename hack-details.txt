@@ -1,0 +1,210 @@
+GARAGE_INFERENCE
+Big Ideas. Cheap Models. The constraint is the creativity.
+MAY 1–4, 2026 ONLINE · FREE $1,700 IN PRIZES
+THE PROBLEM
+Most hackathons reward the biggest model, the fattest GPU, the most expensive API call. That's not
+where the real engineering lives.
+Rate-Limited & Expensive
+Frontier models are rate-limited and expensive — they're not accessible to most builders.
+Budget Exclusion
+$200/month API budgets exclude billions of builders from participating in the AI revolution.
+Offline Blind Spot
+Cloud endpoints don't reach offline devices. Entire use cases are left on the table.
+Not a Craft
+"Just throw GPT-5 at it" is not engineering. It's a shortcut that skips the hard thinking.
+The future of AI isn't the biggest model — it's the smallest model that still gets the job done.
+YOUR MISSION
+Build a working product powered by the
+cheapest, weakest LLMs you can
+find — local or budget-tier API. Then
+show the gap between how bad your
+model is and how good your project
+turned out.
+best_project =
+weakest_possible_model ×
+highest_possible_impact
+A solid app on Gemma 3 1B beats a
+decent app on GPT-5 Nano. Every time.
+ONE REAL PROBLEM ONE CHEAP MODEL
+72 HOURS
+The Rules of the Game
+Use the weakest model you
+can justify
+Engineer around its
+limitations
+Show your work —
+document everything
+Prove the gap between
+model quality and project
+quality
+Open-source everything
+4 MODEL TIERS — PICK YOUR WEIGHT CLASS
+Lower tier = more points. Same output quality on a weaker model is harder — judges reward it.
+Tier 1 · Absolute Garage MAX
+Barely follows instructions
+Qwen 3 0.6B / 1.7B
+Gemma 3 1B, Gemma 3n E2B
+SmolLM2 135M–1.7B
+Phi-4 Mini, Ministral 3B
+Browser / edge models
+Anything ≤4B params
+Tier 2 · Proper Garage HIGH
+Cheap but reliable
+Qwen 3 4B / 8B
+Gemma 3 4B (Q4), Gemma 3n E4B
+Ministral 8B
+DeepSeek-R1-Distill 7B / 8B
+API: GPT-5 Nano
+Gemini 2.0 Flash-Lite / Flash
+The lower your tier, the more the judges lean in. Tier 1 projects that deliver real results are the ones people remember.
+TIERS — CONTINUED
+Tier 3 · Home Workshop MOD
+Decent at low prices
+Qwen 3 14B / 32B
+Qwen 3 30B-A3B (MoE)
+Gemma 3 12B / 27B (Q4)
+Ministral 14B
+API: GPT-5 Mini
+Gemini 2.5 Flash ($0.25–$1.50/M tokens)
+Tier 4 · Rented Studio LOW
+Real capability — prove the engineering mattered
+Llama 4 Scout (Q4+)
+DeepSeek-R1-Distill 70B
+Qwen 3 235B-A22B (Q4)
+API: Claude Haiku 4.5
+Gemini 2.5 Pro batch ($1.50–$3/M)
+🚫 BANNED: GPT-5/5.2/5.2 Pro, Claude Sonnet 4.6/Opus 4.6, Gemini 3 Pro, o3-pro, Llama 4 Maverick (full),
+anything >$3/M input tokens, any frontier model. When in doubt — drop a tier. Judges reward it.
+WHAT A GOOD SUBMISSION LOOKS LIKE
+Your model is dumb. Your job is to engineer around its weaknesses. Pick the techniques that fit your project:
+Structured Prompts
+Constrain output to what the model can handle. Shape the
+input, shape the result.
+RAG
+Model doesn't need to know — just read and respond.
+Retrieval does the heavy lifting.
+Tool Use
+Orchestrate actions, don't generate raw knowledge. Let
+tools do what models can't.
+Multi-Step Pipelines
+Break tasks into tiny subtasks. Small models excel at
+narrow, well-defined jobs.
+Validation Layers
+Catch bad outputs and retry. Build the safety net your
+model needs.
+Caching & Fine-tuning
+Pre-compute what you can. Make a tiny model an expert at
+one specific thing.
+Show the judges you thought about it. Not a benchmark wrapper. Not a chatbot that just chats.
+WHAT YOU'RE SHIPPING
+Every submission must include all six of the following components. No exceptions.
+1
+Working Demo
+Live URL, video, or installable project. Must run.
+2
+Public GitHub Repo
+Clean README, one-command setup. No mystery installs.
+3
+Exact Model Declaration
+"Qwen 3 4B Q4_K_M" — not "a small Llama." Precision matters.
+4
+Technical Writeup
+What model, what problem, what techniques, honest division of labor.
+5
+Cost & Performance Metrics
+Actual $ spent, latency, tokens/sec. Show the receipts.
+6
+2-Min Demo Video + Known Failures
+Where does the model still break? Honesty is rewarded.
+All winning projects must be open-source.
+JUDGING CRITERIA — PART 1
+⭐ The Wow Gap
+30%
+The core metric. How wide is the
+gap between your model's
+expected capability and what your
+project actually does? A Tier 1
+model producing Tier 3 results
+wins. Every time.
+Practical Usefulness
+20%
+Would a real person install this,
+bookmark it, pay for it? Not "would
+they be impressed at demo day" —
+would they actually use it next
+week?
+Technical Execution
+20%
+Stable, fast, smart trade-offs, graceful failures, clean code. Smooth UX.
+Thoughtful architecture documented in the writeup.
+JUDGING CRITERIA — PART 2
+Creativity & Innovation
+10%
+Novel angle. Unexpected use case. A technique judges haven't seen.
+Not another standard RAG chatbot with fresh paint.
+Accessibility & Reproducibility
+10%
+One-command setup. Clear README. Runs on a $500 laptop. Could a
+student in a developing country use this?
+Secure Design
+10%
+Small models hallucinate, jailbreak, follow injected instructions.
+Least-privilege scopes. Input/output validation. No raw shell or DB
+access from model output. Clear threat model.
+The tier system is a lens, not a multiplier. Same score, lower tier wins.
+PRIZES — $1,700
+$1,000
+🥇 Root Access Award
+Best weak model + strong engineering combination. The ultimate
+Garage_Inference prize.
+$300
+🥈 Runner-Up
+Outstanding execution and creative squeeze from a constrained model.
+$200
+🥉 Finalist
+Originality with the least capable model. Proof that constraints breed
+creativity.
+$200
+♡ Community Choice
+Voted by participants. The project the builders loved most.
+Beyond the Cash
+Code review from senior engineers
+Personalized feedback on your project
+Professional connections in the AI space
+A portfolio-worthy shipped project
+Payment Details
+Prizes paid via PayPal or bank transfer within 14 days of winner
+announcement. No hoops, no delays.
+All prizes guaranteed. No sponsorship dependencies.
+TIMELINE
+May 1 · 18:00 UTC 1
+Hackathon starts. 72 hours on the clock. Build begins.
+2 May 4 · 18:00 UTC
+Submissions close. Push your repo and submit. No late
+entries.
+May 4 – May 16 3
+Judging panel reviews every submission. Every project
+gets a real look.
+4 May 16 – May 23
+Community voting opens. One project, one vote. Make
+your project shareable.
+May 23 5
+Winners announced. Prizes paid within 14 days of
+announcement.
+BEFORE YOU START — RIGHT NOW
+Answer these four questions before you write a single line of code:
+1 What's my model?
+Exact name + tier. "Qwen 3 0.6B", not "small one."
+Precision is the first sign of good engineering.
+2 What real problem am I solving?
+Someone uses it next week — yes or no? If you can't
+answer yes, find a different problem.
+3 What's my engineering scaffolding?
+RAG, structured outputs, tool use, validation — pick 2–3.
+Know your stack before you start.
+4 Where does inference run?
+Browser, CPU laptop, RPi, cheap API — and what's it cost?
+Know your constraints cold.
+If you answered all four — you're ready.
+72 hours. The weakest model you can find. The smartest engineering you can muster.
+Build something that makes people forget the model is cheap.

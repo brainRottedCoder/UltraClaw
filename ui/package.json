@@ -1,0 +1,41 @@
+{
+  "name": "openclaw-control-ui",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test": "vitest run --config vitest.config.ts",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@lit-labs/signals": "^0.2.0",
+    "@lit/context": "^1.1.6",
+    "@noble/ed25519": "3.0.0",
+    "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.27",
+    "dompurify": "^3.3.1",
+    "framer-motion": "^12.34.3",
+    "jimp": "^1.6.0",
+    "lit": "^3.3.2",
+    "lucide-react": "^0.575.0",
+    "marked": "^17.0.3",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1",
+    "signal-polyfill": "^0.2.2",
+    "signal-utils": "^0.21.1",
+    "tailwindcss": "^4.2.1",
+    "vite": "7.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@tauri-apps/api": "^2.0.1",
+    "@tauri-apps/cli": "^1.6.0",
+    "@vitest/browser-playwright": "4.0.18",
+    "playwright": "^1.58.2",
+    "vitest": "4.0.18"
+  }
+}
