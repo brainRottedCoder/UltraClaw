@@ -133,6 +133,7 @@ local-llm = ["llama_cpp"]
 discord = ["serenity"]
 matrix = []
 telegram = ["teloxide"]
+webhook = []
 # WASM Plugin System (requires wasmer)
 wasm = ["wasmer"]
 

@@ -1,4 +1,4 @@
-nowtarget/
+target/
 **/*.rs.bk
 .env
 .idea/

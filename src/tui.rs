@@ -1,3 +1,13 @@
+use crate::config::Config;
+use crate::connector::Connector;
+use crate::db::ConversationDb;
+use crate::inference::InferenceEngine;
+use crate::mcp::McpClient;
+use crate::memory::MemoryStore;
+use crate::session::SessionManager;
+use crate::skill::SkillRegistry;
+use crate::soul::Soul;
+use async_trait::async_trait;
 use ratatui::{
     backend::CrosstermBackend,
     crossterm::{
@@ -11,7 +21,9 @@ use ratatui::{
     widgets::{Block, Borders, List, ListItem, ListState, Paragraph, Wrap},
     Terminal,
 };
+use std::sync::Arc;
 use std::{error::Error, io};
+use tokio::sync::Mutex;
 
 const CAPABILITIES: &[&str] = &[
     // OS Nodes
@@ -130,5 +142,34 @@ fn run_app(
                 _ => {}
             }
         }
+    }
+}
+
+pub struct TuiConnector;
+
+impl TuiConnector {
+    pub fn new() -> Self {
+        Self
+    }
+}
+
+#[async_trait]
+impl Connector for TuiConnector {
+    fn name(&self) -> &str {
+        "TUI"
+    }
+
+    async fn run(
+        &self,
+        _engine: Arc<dyn InferenceEngine>,
+        _db: Arc<Mutex<ConversationDb>>,
+        _memory: Arc<Mutex<MemoryStore>>,
+        _sessions: Arc<Mutex<SessionManager>>,
+        _soul: Arc<Soul>,
+        _skills: Arc<SkillRegistry>,
+        _mcp: Option<Arc<McpClient>>,
+        _config: Arc<Config>,
+    ) -> anyhow::Result<()> {
+        run_tui().map_err(|e| anyhow::anyhow!("TUI error: {}", e))
     }
 }

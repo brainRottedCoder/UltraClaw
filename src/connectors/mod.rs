@@ -12,6 +12,7 @@ pub mod matrix;
 #[cfg(feature = "telegram")]
 pub mod telegram;
 
+#[cfg(feature = "webhook")]
 pub mod webhook;
 pub mod massive_channels;
 

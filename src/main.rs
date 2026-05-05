@@ -75,6 +75,7 @@ mod document_parser;
 mod rag_engine;
 mod tools;
 mod cli;
+mod tui;
 mod connector;
 mod connectors;
 mod voice_skill;
@@ -756,6 +757,9 @@ if list_models {
     if args.contains(&"--cli".to_string()) {
         info!("CLI mode enabled via flag");
         connectors.push(Box::new(cli::CliConnector::new()));
+    } else if args.contains(&"--tui".to_string()) {
+        info!("TUI mode enabled via flag");
+        connectors.push(Box::new(tui::TuiConnector::new()));
     } else if args.contains(&"--demo".to_string()) {
         info!("DEMO mode enabled via flag - Running GARAGE_INFERENCE hackathon demo");
         let metrics = crate::demo::run_demo_mode(
@@ -768,7 +772,16 @@ if list_models {
         println!("\n{}", report);
         return Ok(());
     } else {
-    // No default connector inserted here because Matrix was removed by user request.
+        // No mode-specific flag detected — use config-driven connectors below
+    }
+
+    // --- Matrix Connector ---
+    #[cfg(feature = "matrix")]
+    {
+        if let Some(matrix_connector) = connectors::matrix::MatrixConnector::from_config(&config) {
+            info!("Matrix connector enabled via config");
+            connectors.push(Box::new(matrix_connector));
+        }
     }
 
     // --- Discord Connector ---

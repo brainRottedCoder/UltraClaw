@@ -297,16 +297,8 @@ if let Ok(val) = env::var("ULTRACLAW_LOCAL_MAX_TOKENS") {
 
     /// Check if the configuration is valid (has required fields).
     pub fn is_valid(&self) -> bool {
-        // Token-based auth (preferred)
-        if !self.matrix_homeserver.is_empty() 
-            && !self.matrix_user.is_empty() 
-            && self.matrix_token.is_some() {
-            return true;
-        }
-        // Password-based auth (fallback)
-        !self.homeserver_url.is_empty() 
-            && !self.matrix_user.is_empty() 
-            && !self.matrix_password.is_empty()
+        (!self.cloud_api_key.is_empty() && !self.cloud_model.is_empty())
+            || !self.ollama_base_url.is_empty()
     }
 }
 
